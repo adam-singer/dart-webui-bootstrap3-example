@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<element name="tooltip" extends="div">
+  <template>
+    <button id="btn" on-click="toggleTooltip($event)" type="button" class="btn btn-default" title="">Tooltip on right</button>
+  </template>
+  <script type="application/dart">
+    import 'dart:html';
+    import 'package:web_ui/web_ui.dart';
+    import 'package:js/js.dart'as j;
+    import 'dart:async';
+
+    class Tooltip extends WebComponent {
+      inserted() {
+        j.scoped((){
+          var options = j.map({
+            "trigger" : 'click',
+            "placement" : 'right'
+          });
+          j.context.$('#btn').tooltip(options);
+        });
+        Timer.run(()=>query('#btn').click());
+      }
+
+      toggleTooltip(Event e) {
+        e.target.attributes['data-original-title'] =  new DateTime.now().toString();
+      }
+    }
+  </script>
+</element>
